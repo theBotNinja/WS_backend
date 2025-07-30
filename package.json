@@ -9,12 +9,14 @@
   "author": "thebotninja",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "config": "^4.0.0",
     "debug": "^4.4.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "joi": "^17.13.3",
+    "lodash": "^4.17.21",
     "mongoose": "^8.16.0",
     "morgan": "^1.10.0"
   }

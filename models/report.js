@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema({
-  "_id": "ObjectId",
   "user": {
     "type": "ObjectId",
     "ref": "User"
@@ -15,5 +14,15 @@ const reportSchema = new mongoose.Schema({
     "type": "String",
     "enum": ["Harassment", "Assault", "Suspicious Activity", "Other"]
   },
-  "reportedAt": "Date"
+  "reportedAt": {type:Date,default:Date.now()}
 });
+
+const ReportModel = mongoose.model("report",reportSchema)
+
+async function createReport(data){
+  let newReport =  ReportModel()
+  newReport.set(data)
+  return await newReport.save()
+}
+
+module.exports = {createReport}

@@ -1,7 +1,24 @@
 const express = require("express");
 const ReportRoutes = express.Router();
-const Joi = require("joi");
-const { Report } = require("../models/report");
+const Joi = require('joi');
+
+const schema = Joi.object({
+  "_id": "ObjectId",
+  "user": {
+    "type": "ObjectId",
+    "ref": "User"
+  },
+  "location": {
+    "type": "ObjectId",
+    "ref": "Location"
+  },
+  "reportDetails": "String",
+  "reportType": {
+    "type": "String",
+    "enum": ["Harassment", "Assault", "Suspicious Activity", "Other"]
+  },
+  "reportedAt": {type:Date,default:Date.now()}
+})
 
 ReportRoutes.get("/", (req, res) => {
   res.status(200).send("Report get route");

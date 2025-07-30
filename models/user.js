@@ -24,43 +24,11 @@ const userSchema = new mongoose.Schema({
   "createdAt": {type:Date ,default:Date.now()}
 });
 
-const User = mongoose.model("Users",userSchema)
+const UserModel = mongoose.model("Users",userSchema)
 
-async function createUser(dataObj) {
-  let user = User()
-  
-  //validation  of dataObj
-
-  user.set(userObj)
-  return await user.save()
+async function createUser(data){
+  let newUser = UserModel()
+  newUser.set(data)
+  return await newUser.save()
 }
-async function updateUser(data) {
-  try{
-    //validate data
-
-    const userupdated  = await User.findByIdAndUpdate(data)
-    if (userupdated){
-      return "update successfull"
-    }else{
-      return "Can't update"
-    }
-  }catch (err){
-    console.log(err)
-  }
-  
-}
-async function deleteUser(UserId) {
-  try{
-    //auth and valiadte
-
-    const userdeleted =  await User.findByIdAndDelete(UserId)
-    if (userdeleted){
-      return "Successfully Deleted"
-    }else{
-      return "user not found"
-    }
-  }catch (err){
-    console.log(err)
-  }
-  return "try again later!"
-}
+module.exports = {UserModel}
