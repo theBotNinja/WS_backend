@@ -1,5 +1,6 @@
 const express = require("express");
 const _ = require("lodash")
+const auth = require("../middleware/auth");
 const bcrypt = require("bcrypt")
 const {UserModel} = require("../models/user");
 const UserRoutes = express.Router();
@@ -43,8 +44,8 @@ const schema = Joi.object({
 })
 
 
-UserRoutes.get("/",(req,res)=>{
-    res.status(200).send("User show user porfile")
+UserRoutes.get("/me",auth,(req,res)=>{
+    res.status(200).send(req.user)
 });
 
 UserRoutes.post("/create",async (req,res)=>{
@@ -62,7 +63,8 @@ UserRoutes.post("/create",async (req,res)=>{
     const hashed = await bcrypt.hash(req.body.password,salt)
     user.password = hashed
     await user.save()
-    res.send(_.pick(user,["firstName","email","_id"]))
+    const TOKEN = user.generateAuthToken()
+    res.header("x-auth-token",TOKEN).send(_.pick(user,["firstName","email","_id"]))
 });
 module.exports = UserRoutes;
 

@@ -3,6 +3,7 @@ const express = require("express");
 const helmet = require("helmet");
 const ReportRoutes = require("./routes/ReportsRoutes.js")
 const UserRoutes = require("./routes/UserRoutes.js")
+const authRoute = require("./routes/auth.js")
 const mongoose = require("mongoose")
 require("dotenv").config();
 const app = express();
@@ -25,7 +26,8 @@ app.use(helmet());
 app.use(express.json());
 
 app.use("/report",ReportRoutes);
-app.use("/user",UserRoutes)
+app.use("/user",UserRoutes);
+app.use("/auth",authRoute);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   connectDB();

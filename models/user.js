@@ -1,34 +1,35 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const _ = require("lodash");
 
 const userSchema = new mongoose.Schema({
-  "firstName": "String",
-  "lastName": "String",
-  "email": {
-    "type": "String",
-    "unique": true,
-    "required": true
+  firstName: "String",
+  lastName: "String",
+  email: {
+    type: "String",
+    unique: true,
+    required: true,
   },
-  "password": "String",
-  "phoneNumber": {
-    "type": "String",
-    "unique": true,
-    "required": true
+  password: "String",
+  phoneNumber: {
+    type: "String",
+    unique: true,
+    required: true,
   },
-  "emergencyContacts": [
+  emergencyContacts: [
     {
-      "contactName": "String",
-      "phoneNumber": "String",
-      "relationship": "String"
-    }
+      contactName: "String",
+      phoneNumber: "String",
+      relationship: "String",
+    },
   ],
-  "createdAt": {type:Date ,default:Date.now()}
+  createdAt: { type: Date, default: Date.now() },
 });
-
-const UserModel = mongoose.model("Users",userSchema)
-
-async function createUser(data){
-  let newUser = UserModel()
-  newUser.set(data)
-  return await newUser.save()
-}
-module.exports = {UserModel}
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign(
+    _.pick(this, ["_id", "firstName", "email"]),
+    process.env.JWT_privateKey
+  );
+};
+const UserModel = mongoose.model("Users", userSchema);
+module.exports = { UserModel };
