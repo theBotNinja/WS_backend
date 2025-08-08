@@ -44,8 +44,9 @@ const schema = Joi.object({
 })
 
 
-UserRoutes.get("/me",auth,(req,res)=>{
-    res.status(200).send(req.user)
+UserRoutes.get("/me",auth,async (req,res)=>{
+    let user = await UserModel.findById(req.user._id).select("-password")
+    res.status(200).send(user)
 });
 
 UserRoutes.post("/create",async (req,res)=>{

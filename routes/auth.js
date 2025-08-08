@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const { UserModel } = require("../models/user");
 const authRoute = express.Router();
 const Joi = require("joi");
-const jwt = require("jsonwebtoken");
 
 const schema = Joi.object({
   email: Joi.string()
